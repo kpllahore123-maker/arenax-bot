@@ -55,7 +55,8 @@ client.on('messageCreate', async (message) => {
         { name: '🏆 Tournaments', value: '`!tournaments` `!worldcup` `!missions`', inline: false },
         { name: '🎲 Fun', value: '`!roll` `!coinflip` `!quiz` `!joke`', inline: false },
         { name: '📜 Server', value: '`!rules` `!serverinfo`', inline: false },
-        { name: '🛡️ Moderation', value: '`!warn @user reason` `!rules`', inline: false },
+        { name: '🔧 Maintenance', value: '`!maintenance` — Check maintenance status\n`!setmaintenance on/off` — Admin only', inline: false },
+        { name: '🛡️ Moderation', value: '`!warn @user reason`', inline: false },
       )
       .setFooter({ text: 'ArenaX — Compete · Rise · Dominate' })
       .setTimestamp();
@@ -222,6 +223,59 @@ client.on('messageCreate', async (message) => {
         .setDescription(`**${message.author.username}** got it right!\nAnswer: **${quiz.answer}**`)
         .setFooter({ text: 'Visit ArenaX to win real AX Coins!' });
       return message.reply({ embeds: [embed] });
+    }
+  }
+
+  // ── !maintenance ──
+  if (content === '!maintenance') {
+    const embed = new EmbedBuilder()
+      .setColor('#e8404a')
+      .setTitle('🔧 ArenaX — Under Maintenance')
+      .setDescription('ArenaX is currently undergoing maintenance. We apologize for the inconvenience!')
+      .addFields(
+        { name: '⏰ Status', value: '🔴 Currently Offline', inline: true },
+        { name: '🕐 Expected Time', value: 'Coming back soon!', inline: true },
+        { name: '💬 Updates', value: 'Stay in this Discord server for live updates!', inline: false },
+        { name: '📧 Support', value: 'Contact admin if urgent via Discord DM', inline: false },
+      )
+      .setImage('https://raw.githubusercontent.com/kpllahore123-maker/arenaX/main/event_banner_1783187383925.jpg')
+      .setFooter({ text: 'ArenaX — We\'ll be back stronger! 💪' })
+      .setTimestamp();
+    return message.channel.send({ embeds: [embed] });
+  }
+
+  // ── !maintenance on/off (admin only) ──
+  if (args[0].toLowerCase() === '!setmaintenance') {
+    if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
+      return message.reply('❌ Only admins can use this command!');
+    }
+    const status = args[1]?.toLowerCase();
+    if (status === 'on') {
+      const embed = new EmbedBuilder()
+        .setColor('#e8404a')
+        .setTitle('🔧 ArenaX — Maintenance Mode ON')
+        .setDescription('⚠️ ArenaX is going into maintenance mode. The app will be unavailable for some time.')
+        .addFields(
+          { name: '⏰ Started At', value: new Date().toLocaleString('en-PK'), inline: true },
+          { name: '📢 Notice', value: 'All players please save your progress!', inline: false },
+        )
+        .setFooter({ text: 'ArenaX Team' })
+        .setTimestamp();
+      return message.channel.send({ embeds: [embed] });
+    } else if (status === 'off') {
+      const embed = new EmbedBuilder()
+        .setColor('#3ddc84')
+        .setTitle('✅ ArenaX — Back Online!')
+        .setDescription('🎉 ArenaX is back online! All systems are running smoothly.')
+        .addFields(
+          { name: '⏰ Restored At', value: new Date().toLocaleString('en-PK'), inline: true },
+          { name: '🔗 Play Now', value: 'https://kpllahore123-maker.github.io/arenaX/', inline: false },
+        )
+        .setFooter({ text: 'ArenaX — Compete · Rise · Dominate' })
+        .setTimestamp();
+      return message.channel.send({ embeds: [embed] });
+    } else {
+      return message.reply('Usage: `!setmaintenance on` or `!setmaintenance off`');
     }
   }
 
