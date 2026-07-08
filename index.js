@@ -135,6 +135,7 @@ client.on('messageCreate', async (message) => {
         { name: '🔗 Join Now', value: 'https://kpllahore123-maker.github.io/arenaX/' },
       )
       .setColor('#f0c040')
+      .setImage('https://raw.githubusercontent.com/kpllahore123-maker/arenaX/main/event_banner_1783187383925.jpg')
       .setFooter({ text: 'ArenaX — Compete · Rise · Dominate' });
     return message.reply({ embeds: [embed] });
   }
